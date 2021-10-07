@@ -1,4 +1,4 @@
-from main import *
+from datasets import *
 import torch
 import os
 
@@ -19,10 +19,9 @@ def Test(testloader):
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
 
-    print('Accuracy of the network on the 10000 test images: %d %%' % (
+    print('Accuracy of the network on the test images is %d %%' % (
             100 * correct / total))
 
 
 if __name__ == '__main__':
-    trainLoader, testLoader = DataInit(dataDir)
-    Test(testLoader)
+    Test(testloader)

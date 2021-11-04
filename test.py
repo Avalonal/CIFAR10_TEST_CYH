@@ -4,7 +4,7 @@ import os
 
 
 def Test(testloader):
-    net = torch.load(os.path.join(modelDir, 'model_00.pkl'))
+    net = torch.load(os.path.join(modelDir, model_name))
 
     print(device)
 

@@ -26,7 +26,10 @@ def Train(trainloader, device):
                       (epoch + 1, i + 1, running_loss / stepSize))
                 running_loss = 0.0
 
-        torch.save(net, os.path.join(modelDir, 'model_00.pkl'))
+        if epoch % 10 == 9:
+            torch.save(net, os.path.join(modelDir, model_name))
+
+    torch.save(net, os.path.join(modelDir, model_name))
     print('Finished Training')
 
 
@@ -34,9 +37,9 @@ if __name__ == '__main__':
 
     print(device)
 
-    #net = Net()
-    #net.to(device)
-    net = torch.load(os.path.join(modelDir, 'model_00.pkl'))
+    # net = Net()
+    # net.to(device)
+    net = torch.load(os.path.join(modelDir, model_name))
     net.cuda()
 
     criterion = nn.CrossEntropyLoss()

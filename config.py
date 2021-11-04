@@ -30,6 +30,8 @@ classes = ('plane',
 dataDir = './data/'
 modelDir = '.\\model'
 
+model_name = 'model_00.pkl'
+
 stepSize = 10
 
 epoches = 50

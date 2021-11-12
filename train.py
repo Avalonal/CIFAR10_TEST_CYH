@@ -5,31 +5,31 @@ import torch.optim as optim
 import torch.nn as nn
 import os
 
-def Train(trainloader, device):
+def Train(model, trainloader, device):
     for epoch in range(epoches):
-
+        running_step = 0
         running_loss = 0.0
         for i, data in enumerate(trainloader, 0):
-            # 获取输入
-            inputs, labels = data
-            inputs, labels = inputs.to(device), labels.to(device)
+            images, labels = data
+            images, labels = images.to(device), labels.to(device)
 
             optimizer.zero_grad()
-            outputs = net(inputs)
+
+            outputs = model(images)
+
             loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
-
             running_loss += loss.item()
-            if i % stepSize == stepSize-1:
-                print('[%d, %5d] loss: %.3f' %
-                      (epoch + 1, i + 1, running_loss / stepSize))
-                running_loss = 0.0
+            running_step += 1
+
+        print('[%d] loss: %.3f' %
+              (epoch + 1, running_loss / running_step))
 
         if epoch % 10 == 9:
-            torch.save(net, os.path.join(modelDir, model_name))
+            torch.save(model, os.path.join(modelDir, model_name))
 
-    torch.save(net, os.path.join(modelDir, model_name))
+    torch.save(model, os.path.join(modelDir, model_name))
     print('Finished Training')
 
 
@@ -37,12 +37,12 @@ if __name__ == '__main__':
 
     print(device)
 
-    # net = Net()
-    # net.to(device)
-    net = torch.load(os.path.join(modelDir, model_name))
-    net.cuda()
+    # model = Net()
+    # model.to(device)
+    model = torch.load(os.path.join(modelDir, model_name))
+    model.cuda()
 
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
+    optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
-    Train(trainloader, device)
+    Train(model, trainloader, device)
